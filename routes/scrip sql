@@ -1,0 +1,4 @@
+select * from members left join users on members.userid= users.userid where projectid=13;
+
+
+select users.userid, users.firstname from members left join users on members.userid= users.userid where projectid=13;
