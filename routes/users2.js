@@ -14,7 +14,9 @@ let checkOption = {
 }
 
 module.exports = (db) => {
+  
   // //REGISTER USERS
+  // localhost:3000/users
   router.get('/', check.isLoggedIn, function (req, res, next) {
     let link = 'users'
     let { checkId, id, checkName, name, checkEmail, email, checkPosition, position, checkType, type } = req.query
@@ -70,7 +72,6 @@ module.exports = (db) => {
         })
         let users = data.rows
         res.render('users/list', {
-          // res.json({
           link,
           users,
           pages,
@@ -83,6 +84,7 @@ module.exports = (db) => {
     })
   });
 
+  // localhost:3000/users method:post
   router.post('/', check.isLoggedIn, function (req, res) {
     checkOption.Id = req.body.cId
     checkOption.Name = req.body.cName
@@ -94,6 +96,7 @@ module.exports = (db) => {
     res.redirect('/users')
   })
 
+  // localhost:3000/projects/add
   router.get('/add', check.isLoggedIn, (req, res) => {
     const link = 'users';
     res.render('users/add', {
@@ -102,12 +105,13 @@ module.exports = (db) => {
     })
   })
 
+  // localhost:3000/projects/add method:post
   router.post('/add', check.isLoggedIn, function (req, res, next) {
     let { firstName, lastName, email, password, position, type, role } = req.body
 
 
     bcrypt.hash(password, saltRounds, function (err, hash) {
-      // Store hash in your password DB.
+      // Store hash in your password from database postgree
       if (err) return res.status(500).json({
         error: true,
         message: err
@@ -127,68 +131,5 @@ module.exports = (db) => {
     });
   });
 
-  router.get('/edit/:id', check.isLoggedIn, (req, res) => {
-    let link = 'users'
-    let id = req.params.id
-    let sql = `SELECT * FROM users WHERE userid = ${id}`
-    db.query(sql, (err, data) => {
-      if (err) return res.status(500).json({
-        error: err,
-        message: err
-      })
-      res.render('users/edit', {
-        // res.json({
-        link,
-        data: data.rows[0],
-        login: req.session.user
-      })
-    })
-  })
-
-  router.post('/edit/:id', check.isLoggedIn, function (req, res) {
-    let userid = req.params.id
-    let { firstName, lastName, password, position, type, role } = req.body
-
-    bcrypt.hash(password, saltRounds, function (err, hash) {
-      if (err) return res.status(500).json({
-        error: true,
-        message: err
-      })
-
-      let sqlUpdate = `
-      UPDATE users SET firstname=$1, lastname=$2, password=$3, position=$4, typejob=$5, role=$6 WHERE userid=$7`
-      let value = [firstName, lastName, hash, position, type, role, userid]
-
-      db.query(sqlUpdate, value, (err) => {
-        if (err) return res.status(500).json({
-          error: true,
-          message: err
-        })
-        res.redirect('/users')
-      })
-    });
-  })
-
-  router.get('/delete/:id', check.isLoggedIn, function (req, res) {
-    let id = req.params.id
-    let sql = `DELETE FROM members WHERE userid=$1`
-
-    db.query(sql, [id], (err) => {
-      if (err) return res.status(500).json({
-        error: true,
-        message: err
-      })
-
-      let sql2 = `DELETE FROM users WHERE userid=$1`
-      db.query(sql2, [id], (err) => {
-        if (err) return res.status(500).json({
-          error: true,
-          message: err
-        })
-        res.redirect('/users')
-      })
-    })
-
-  })
-    return router;
+  return router;
 }
