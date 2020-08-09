@@ -43,7 +43,7 @@ module.exports = (db) => {
 
       let sql = `UPDATE users SET password = '${hash}', firstname= '${firstname}', lastname= '${lastname}', 
       position= '${position}', typejob= '${typejob}' WHERE email = '${user.email}'`
-      console.log(sql);
+      //console.log(sql);
 
       db.query(sql, (err) => {
         if (err) return res.status(500).json({

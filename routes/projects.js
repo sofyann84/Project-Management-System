@@ -938,7 +938,7 @@ router.post('/:projectid/issues/add', check.isLoggedIn, function (req, res, next
           if (err) return res.status(500).send(err)
 
           db.query(sqlActivity, value, (err) => {
-            console.log('testing')
+            //console.log('testing')
             if (err) return res.status(500).json({
               error: true,
               message: err
