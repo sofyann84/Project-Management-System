@@ -18,11 +18,19 @@ const fileUpload = require('express-fileupload');
 //Integration Postgree Data Base
 const { Pool } = require('pg')
 
+// const pool = new Pool({
+//   user: 'sofyan',
+//   host: 'localhost',
+//   database: 'pmsdb',
+//   password: '12345',
+//   port: 5432,
+// })
+
 const pool = new Pool({
-  user: 'sofyan',
-  host: 'localhost',
-  database: 'pmsdb',
-  password: '12345',
+  user: 'bzwxtgovtzwijp',
+  host: 'ec2-50-16-198-4.compute-1.amazonaws.com',
+  database: 'ddpg3pjed72l1s',
+  password: '1ba03a33006f68f71918b700dcd5a6c5af9e4a61496ed45fb32e203e85d084ae',
   port: 5432,
 })
 
